@@ -2,12 +2,13 @@ import React, { useState, useEffect }from 'react';
 import * as yup from 'yup';
 
 const schema = yup.object().shape({
-    name: yup.string().required().min(2, 'name must be at least 2 characters')
+    name: yup.string().min(2, "name must be at least 2 characters").required("This is required")
+
 })
 
 const Form = (props) => {
-    const [form, setForm] = useState({ Name: '', Size: '', Toppings: false, Special: '' });
-    const [errors, setErrors] = useState({ Name: '', Size: '', Toppings: false, Special: '' });
+    const [form, setForm] = useState({ name: '', Size: '', Toppings: false, Special: '' });
+    const [errors, setErrors] = useState({ name: '', Size: '', Toppings: false, Special: '' });
 
     const setFormErrors = (name, value) => {
         yup.reach(schema, name).validate(value)
@@ -17,6 +18,7 @@ const Form = (props) => {
 
     const change = event => {
         const { value, name, type } = event.target
+        console.log(value, 'what we are looking at', name, event.target)
         setFormErrors(name, value )
         setForm({...form, [name]: value})
     }
@@ -26,8 +28,9 @@ const Form = (props) => {
     }, [form])
 
     return (
+        
         <form id="pizza-form">
-            <div style={{ color: 'red'}}>
+           <div style={{ color: 'red'}}>
             <div>{errors.name}</div>
             </div>
             <h1>Build Your Own Pizza</h1>
@@ -35,6 +38,7 @@ const Form = (props) => {
                 <input 
                 id="name-input"
                 placeholder='Name'
+                name='name'
                 type='text'
                 onChange={change}
                 value={form.name}
@@ -86,3 +90,5 @@ export default Form;
 //}
 
 // (2ND X) DOES NAVIGATE TO /PIZZA FROM /? RIGHT?
+
+// yup.string().required().min(2, 'name must be at least 2 characters')
